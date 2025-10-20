@@ -1,18 +1,9 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-    <meta charset="UTF-8">
-    <title>{% if author %}Edit{% else %}New author{% endif %}</title>
-</head>
-<body>
-    <h1>{% if author %}Edit{% else %}New author{% endif %}</h1>
-    <form method="post">
-        <label>Name:</label><br>
-        <input type="text" name="name" value="{{ author.name if author else '' }}"><br><br>
-        <label>Bio:</label><br>
-        <textarea name="bio">{{ author.bio if author else '' }}</textarea><br><br>
-        <button type="submit">Save</button>
-    </form>
-    <a href="{{ url_for('list_authors') }}">Go back</a>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+  <h2>{% if author %}Szerző szerkesztése{% else %}Új szerző hozzáadása{% endif %}</h2>
+  <form method="post">
+    <label>Név:<br><input type="text" name="name" value="{{ author.name if author else '' }}"></label>
+    <label>Életrajz:<br><textarea name="bio">{{ author.bio if author else '' }}</textarea></label>
+    <button type="submit">Mentés</button>
+  </form>
+{% endblock %}

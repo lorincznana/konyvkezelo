@@ -79,7 +79,7 @@ with app.app_context():
     db.session.add_all(borrow_records)
     db.session.commit()
 
-print("Adatbázis sikeresen feltöltve mintaadatokkal!")
+print("Adatbázis feltöltve mintaadatokkal.")
 
 
 

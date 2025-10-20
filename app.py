@@ -36,6 +36,8 @@ def new_author():
         return redirect(url_for('list_authors'))
     return render_template('author_form.html', author=None)
 
+
+
 @app.route('/authors/edit/<int:id>', methods=['GET', 'POST'])
 def edit_author(id):
     author = Author.query.get_or_404(id)

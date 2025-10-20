@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-    <meta charset="UTF-8">
-    <title>Szerzők</title>
-</head>
-<body>
-    <h1>The authors</h1>
-    <a href="{{ url_for('new_author') }}">Add new authors</a>
-    <ul>
-        {% for author in authors %}
-        <li>
-            {{ author.name }} –
-            <a href="{{ url_for('edit_author', id=author.id) }}">Edit</a> |
-            <a href="{{ url_for('delete_author', id=author.id) }}">Delete/remove</a> |
-            <a href="{{ url_for('books_by_author', author_id=author.id) }}">Books</a>
-        </li>
-        {% endfor %}
-    </ul>
-    <a href="{{ url_for('list_books') }}">All books</a>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Szerzők</h2>
+  <a href="{{ url_for('new_author') }}">➕ Új szerző hozzáadása</a>
+  <ul>
+    {% for author in authors %}
+      <li>
+        <strong>{{ author.name }}</strong><br>
+        {{ author.bio }}
+        <br>
+        <a href="{{ url_for('edit_author', id=author.id) }}">✏️ Szerkesztés</a> |
+        <a href="{{ url_for('delete_author', id=author.id) }}">🗑️ Törlés</a> |
+        <a href="{{ url_for('books_by_author', author_id=author.id) }}">📚 Könyvei</a>
+      </li>
+    {% else %}
+      <p>Nincsenek szerzők az adatbázisban.</p>
+    {% endfor %}
+  </ul>
+{% endblock %}

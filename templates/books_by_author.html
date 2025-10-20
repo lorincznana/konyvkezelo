@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-    <meta charset="UTF-8">
-    <title>Books by {{ author.name }}</title>
-</head>
-<body>
-    <h1>Books by {{ author.name }}</h1>
+{% extends 'base.html' %}
+{% block content %}
+  <h2>{{ author.name }} könyvei</h2>
+
+  {% if author.books %}
     <ul>
-        {% for book in author.books %}
-        <li>{{ book.title }} ({{ book.published_year }})</li>
-        {% else %}
-        <li>No books available</li>
-        {% endfor %}
+      {% for book in author.books %}
+        <li>{{ book.title }}</li>
+      {% endfor %}
     </ul>
-    <a href="{{ url_for('list_authors') }}">Go back to authors</a>
-</body>
-</html>
+  {% else %}
+    <p>Ennek a szerzőnek nincs könyve.</p>
+  {% endif %}
+{% endblock %}
