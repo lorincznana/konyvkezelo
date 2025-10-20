@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Könyvek listája</title>
+</head>
+<body>
+    <h1>📚 Könyvek listája</h1>
+
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Cím</th>
+                <th>Szerző</th>
+                <th>Kategória</th>
+                <th>Kiadás éve</th>
+                <th>Elérhető példányok</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author.name if book.author else '-' }}</td>
+                <td>{{ book.category.name if book.category else '-' }}</td>
+                <td>{{ book.published_year or '-' }}</td>
+                <td>{{ book.available_copies }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5">Nincsenek könyvek az adatbázisban.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <a href="{{ url_for('list_authors') }}">⬅ Vissza a szerzőkhöz</a>
+</body>
+</html>
