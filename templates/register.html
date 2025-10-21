@@ -1,0 +1,18 @@
+{%  extends 'base.html' %}
+{% block content %}
+<h2>Regisztráció</h2>
+<form method="POST">
+    <label>Felhasználónév:</label><br>
+    <input type="text" name="username" required><br><br>
+
+    <label>Email:</label><br>
+    <input type="text" name="email" required><br><br>
+
+    <label>Jelszó:</label><br>
+    <input type="text" name="password" required><br><br>
+
+    <button type="submit">Regisztrálok</button>
+
+</form>
+
+{% endblock %}

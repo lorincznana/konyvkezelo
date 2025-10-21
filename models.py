@@ -3,6 +3,8 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
+from flask_login import UserMixin
+
 class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
@@ -10,7 +12,7 @@ class Role(db.Model):
     description = db.Column(db.String(255))
     users = db.relationship('User', backref='role', lazy=True)
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
