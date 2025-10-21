@@ -5,10 +5,20 @@
   {% if author.books %}
     <ul>
       {% for book in author.books %}
-        <li>{{ book.title }}</li>
+        <li>
+          <strong>{{ book.title }}</strong>
+          {% if book.published_year %}
+            ({{ book.published_year }})
+          {% endif %}
+          {% if book.category %}
+            – kategória: {{ book.category.name }}
+          {% endif %}
+        </li>
       {% endfor %}
     </ul>
   {% else %}
-    <p>Ennek a szerzőnek nincs könyve.</p>
+    <p>Ennek a szerzőnek még nincsenek könyvei.</p>
   {% endif %}
+
+  <a href="{{ url_for('list_authors') }}">← Vissza a szerzőkhöz</a>
 {% endblock %}

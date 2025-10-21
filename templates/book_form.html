@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{% if book %}Könyv szerkesztése{% else %}Új könyv hozzáadása{% endif %}</h2>
+    <form method="POST">
+        <label>Cím:<br><input type="text" name="title" value="{{ book.name if book else '' }}"></label>
+        <label>ISBN:<br><input type="number" name="isbn" value="{{ book.bio if book else '' }}"></label>
+        <label>Kiadás éve:<br><input type="number" name="published_year" value="{{ book.published_year if book else '' }}"></label>
+        <label>Elérhető darabszám:<br><input type="number" name="available_copies" value="{{ book.available_copies if book else '' }}"></label>
+        <label>Szerző:<br><input type="text" name="author" value="{{ book.author if book else '' }}"></label>
+        <label>Kategória:<br><input type="text" name="category" value="{{ book.category if book else '' }}"></label>
+        <button type="submit">Mentés</button>
+    </form>
+{% endblock %}

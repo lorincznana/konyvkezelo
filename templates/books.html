@@ -2,22 +2,18 @@
 {% block content %}
   <h2>Könyvek</h2>
 
-
-
-    {% if books %}
+  {% if books %}
     <ul>
       {% for book in books %}
-          <li>
-           <strong>{{ book.title }}</strong>
+        <li>
+          <strong>{{ book.title }}</strong>
           {% if book.author %}
             – {{ book.author.name }}
           {% endif %}
-        <br>
-
-
-          </li>
-
-
+          {% if book.category %}
+            – {{ book.category.name }}
+          {% endif %}
+        </li>
       {% endfor %}
     </ul>
   {% else %}
