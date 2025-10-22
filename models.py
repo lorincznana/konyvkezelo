@@ -20,6 +20,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
     borrow_records = db.relationship('BorrowRecord', backref='user', lazy=True)
 
 class Author(db.Model):
