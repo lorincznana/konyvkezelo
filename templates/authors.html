@@ -1,19 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
   <h2>Szerzők</h2>
-  <a href="{{ url_for('new_author') }}">➕ Új szerző hozzáadása</a>
-  <ul>
-    {% for author in authors %}
-      <li>
-        <strong>{{ author.name }}</strong><br>
-        {{ author.bio }}
-        <br>
-        <a href="{{ url_for('edit_author', id=author.id) }}">✏️ Szerkesztés</a> |
-        <a href="{{ url_for('delete_author', id=author.id) }}">🗑️ Törlés</a> |
-        <a href="{{ url_for('books_by_author', author_id=author.id) }}">📚 Könyvei</a>
-      </li>
+
+    {% if current_user.is_authenticated and current_user.role and current_user.role.name|lower in ['admin', 'librarian'] %}
+
+    <a href="{{ url_for('new_book') }}">➕ Új könyv hozzáadása</a>
+      <ul>
+        {% for author in authors %}
+          <li>
+            <strong>{{ author.name }}</strong><br>
+            {{ author.bio }}
+            <br>
+            <a href="{{ url_for('edit_author', id=author.id) }}">✏️ Szerkesztés</a> |
+            <a href="{{ url_for('delete_author', id=author.id) }}">🗑️ Törlés</a> |
+            <a href="{{ url_for('books_by_author', author_id=author.id) }}">📚 Könyvei</a>
+          </li>
+        {% else %}
+          <p>Nincsenek szerzők az adatbázisban.</p>
+        {% endfor %}
+
     {% else %}
-      <p>Nincsenek szerzők az adatbázisban.</p>
-    {% endfor %}
+
+        <ul>
+        {% for author in authors %}
+          <li>
+            <strong>{{ author.name }}</strong><br>
+            {{ author.bio }}
+            <br>
+
+            <a href="{{ url_for('books_by_author', author_id=author.id) }}">📚 Könyvei</a>
+          </li>
+        {% else %}
+          <p>Nincsenek szerzők az adatbázisban.</p>
+        {% endfor %}
+
+    {% endif %}
   </ul>
 {% endblock %}

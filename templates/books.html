@@ -2,21 +2,48 @@
 {% block content %}
   <h2>Könyvek</h2>
 
-  {% if books %}
-    <ul>
-      {% for book in books %}
-        <li>
-          <strong>{{ book.title }}</strong>
-          {% if book.author %}
-            – {{ book.author.name }}
+    {% if current_user.is_authenticated and current_user.role and current_user.role.name|lower in ['admin', 'librarian'] %}
+        <a href="{{ url_for('new_book') }}">➕ Új könyv hozzáadása</a>
+
+          {% if books %}
+            <ul>
+              {% for book in books %}
+
+                <li>
+                  <strong>{{ book.title }}</strong>
+                  {% if book.author %}
+                    – {{ book.author.name }}
+                  {% endif %}
+                  {% if book.category %}
+                    – {{ book.category.name }}
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>Nincsenek könyvek.</p>
           {% endif %}
-          {% if book.category %}
-            – {{ book.category.name }}
+
+
+    {% else %}
+        {% if books %}
+            <ul>
+              {% for book in books %}
+
+                <li>
+                  <strong>{{ book.title }}</strong>
+                  {% if book.author %}
+                    – {{ book.author.name }}
+                  {% endif %}
+                  {% if book.category %}
+                    – {{ book.category.name }}
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>Nincsenek könyvek.</p>
           {% endif %}
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>Nincsenek könyvek.</p>
-  {% endif %}
+
+    {% endif %}
 {% endblock %}

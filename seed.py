@@ -18,8 +18,8 @@ with app.app_context():
     categories = [
         Category(name="Sci-fi"),
         Category(name="True Crime"),
-        Category(name="Literature"),
-        Category(name="Romantic"),
+        Category(name="Szépirodalom"),
+        Category(name="Romantikus"),
         Category(name="Fantasy")
         ]
     db.session.add_all(categories)

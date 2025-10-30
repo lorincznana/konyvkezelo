@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
 from models import db, Author, Book, User, Role, Category
-
+from functools import wraps
+import flask
+from flask import redirect, url_for, flash
+from flask_login import current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import os
 
@@ -19,7 +21,21 @@ db.init_app(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'  # ha nincs bejelentkezve, ide küldjük
+login_manager.login_view = 'login'
+
+def roles_required(*roles):
+    def wrapper(func):
+        @wraps(func)
+        def decorated_func(*args, **kwargs):
+            if not current_user.is_authenticated:
+                flash("Jelentkezz be a továbbiakhoz.", "warning")
+                return redirect(url_for('login'))
+            if not current_user.role or current_user.role.name not in [r for r in roles]:
+                flash("Nincs jogosultságod ehhez.", "warning")
+                return redirect(url_for('index'))
+            return func(*args, **kwargs)
+        return decorated_func
+    return wrapper
 
 
 
@@ -87,6 +103,8 @@ def books_by_author(author_id):
 
 
 @app.route('/books/new', methods=['GET', 'POST'])
+@login_required
+@roles_required('Admin', 'Librarian')
 def new_book():
     if request.method == 'POST':
         title = request.form['title']
@@ -96,14 +114,14 @@ def new_book():
         author_name = request.form['author'].strip()
         category_name = request.form['category'].strip()
 
-        # Szerző keresése vagy létrehozása
+
         author = Author.query.filter_by(name=author_name).first()
         if not author and author_name:
             author = Author(name=author_name)
             db.session.add(author)
             db.session.commit()
 
-        # Kategória keresése vagy létrehozása
+
         category = Category.query.filter_by(name=category_name).first()
         if not category and category_name:
             new_category = Category(name=category_name)
@@ -111,7 +129,7 @@ def new_book():
             db.session.commit()
             category = new_category
 
-        # Új könyv létrehozása
+
         book = Book(
             title=title,
             isbn=isbn,
@@ -123,6 +141,7 @@ def new_book():
 
         db.session.add(book)
         db.session.commit()
+        flash("Könyv hozzáadva.", "success")
         return redirect(url_for('list_books'))
 
     return render_template('book_form.html')
